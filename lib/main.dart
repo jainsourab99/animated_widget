@@ -55,18 +55,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+  var _width = 200.0;
+  var _height = 150.0;
+  bool flag = true;
+  Decoration myDecor = BoxDecoration(
+      borderRadius: BorderRadius.circular(2), color: Colors.blueGrey);
 
   @override
   Widget build(BuildContext context) {
@@ -84,42 +77,45 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text("Foo Animation"),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          children: [
+            AnimatedContainer(
+              width: _width,
+              height: _height,
+              decoration: myDecor,
+              curve: Curves.bounceInOut,
+              duration: const Duration(seconds: 1),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            const SizedBox(
+              height: 20,
             ),
+            ElevatedButton(
+                onPressed: () {
+                  flag = !flag;
+                  setState(() {
+                    if (flag) {
+                      _width += 100;
+                      _height += 100;
+                      myDecor = BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: Colors.blueGrey);
+                    } else {
+                      _width -= 100;
+                      _height -= 100;
+                      myDecor = BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: Colors.orange);
+                    }
+                  });
+                },
+                child: const Text("Animation"))
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
