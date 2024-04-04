@@ -1,5 +1,4 @@
-import 'dart:async';
-
+import 'package:animated_widget/Details_Screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -41,15 +40,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -57,24 +47,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool isFirst = true;
-  Decoration myDecor = BoxDecoration(
-      borderRadius: BorderRadius.circular(2), color: Colors.blueGrey);
-
-  @override
-  void initState() {
-    super.initState();
-    Timer(Duration(seconds: 2), () {
-      reload();
-    });
-  }
-
-  void reload() {
-    setState(() {
-      isFirst = !isFirst;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -91,40 +63,24 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text("Animated Opacty"),
+        title: Text("Hero Animation"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnimatedCrossFade(
-              sizeCurve: Curves.bounceIn,
-              firstChild: Container(
-                width: 200,
-                height: 200,
-                color: Colors.amber,
-              ),
-              secondChild: Image.asset(
-                "assets/images/photo.png",
-                height: 200,
-                width: 200,
-              ),
-              crossFadeState: isFirst
-                  ? CrossFadeState.showFirst
-                  : CrossFadeState.showSecond,
-              duration: const Duration(seconds: 2),
-              firstCurve: Curves.decelerate,
-              secondCurve: Curves.easeInCirc,
+      body: Container(
+        child: Center(
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => DetailsScreen(),
+                ),
+              );
+            },
+            child: Hero(
+              tag: "background",
+              child: Image.asset("assets/images/photo.png"),
             ),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  isFirst = !isFirst;
-                });
-              },
-              child: Text("Tapped me"),
-            ),
-          ],
+          ),
         ),
       ),
     );
