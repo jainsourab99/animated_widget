@@ -94,20 +94,38 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text("Animated Opacty"),
       ),
       body: Center(
-        child: AnimatedCrossFade(
-            firstChild: Container(
-              width: 200,
-              height: 200,
-              color: Colors.amber,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AnimatedCrossFade(
+              sizeCurve: Curves.bounceIn,
+              firstChild: Container(
+                width: 200,
+                height: 200,
+                color: Colors.amber,
+              ),
+              secondChild: Image.asset(
+                "assets/images/photo.png",
+                height: 200,
+                width: 200,
+              ),
+              crossFadeState: isFirst
+                  ? CrossFadeState.showFirst
+                  : CrossFadeState.showSecond,
+              duration: const Duration(seconds: 2),
+              firstCurve: Curves.decelerate,
+              secondCurve: Curves.easeInCirc,
             ),
-            secondChild: Image.asset(
-              "assets/images/photo.png",
-              height: 200,
-              width: 200,
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  isFirst = !isFirst;
+                });
+              },
+              child: Text("Tapped me"),
             ),
-            crossFadeState:
-                isFirst ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-            duration: const Duration(seconds: 2)),
+          ],
+        ),
       ),
     );
   }
