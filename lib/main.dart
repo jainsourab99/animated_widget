@@ -55,7 +55,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var _width = 200.0;
+  var opacty = 1.0;
   var _height = 150.0;
   bool flag = true;
   Decoration myDecor = BoxDecoration(
@@ -77,42 +77,34 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text("Foo Animation"),
+        title: Text("Animated Opacty"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            AnimatedContainer(
-              width: _width,
-              height: _height,
-              decoration: myDecor,
-              curve: Curves.bounceInOut,
-              duration: const Duration(seconds: 1),
-            ),
-            const SizedBox(
-              height: 20,
+            AnimatedOpacity(
+              opacity: opacty,
+              duration: Duration(seconds: 2),
+              curve: Curves.ease,
+              child: Container(
+                width: 200,
+                height: 200,
+                color: Colors.amberAccent,
+              ),
             ),
             ElevatedButton(
                 onPressed: () {
                   flag = !flag;
                   setState(() {
                     if (flag) {
-                      _width += 100;
-                      _height += 100;
-                      myDecor = BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Colors.blueGrey);
+                      opacty = 0.0;
                     } else {
-                      _width -= 100;
-                      _height -= 100;
-                      myDecor = BoxDecoration(
-                          borderRadius: BorderRadius.circular(4),
-                          color: Colors.orange);
+                      opacty = 1.0;
                     }
                   });
                 },
-                child: const Text("Animation"))
+                child: Text("Tapped Me"))
           ],
         ),
       ),
