@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 void main() {
@@ -55,11 +57,23 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var opacty = 1.0;
-  var _height = 150.0;
-  bool flag = true;
+  bool isFirst = true;
   Decoration myDecor = BoxDecoration(
       borderRadius: BorderRadius.circular(2), color: Colors.blueGrey);
+
+  @override
+  void initState() {
+    super.initState();
+    Timer(Duration(seconds: 2), () {
+      reload();
+    });
+  }
+
+  void reload() {
+    setState(() {
+      isFirst = !isFirst;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,33 +94,20 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text("Animated Opacty"),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AnimatedOpacity(
-              opacity: opacty,
-              duration: Duration(seconds: 2),
-              curve: Curves.ease,
-              child: Container(
-                width: 200,
-                height: 200,
-                color: Colors.amberAccent,
-              ),
+        child: AnimatedCrossFade(
+            firstChild: Container(
+              width: 200,
+              height: 200,
+              color: Colors.amber,
             ),
-            ElevatedButton(
-                onPressed: () {
-                  flag = !flag;
-                  setState(() {
-                    if (flag) {
-                      opacty = 0.0;
-                    } else {
-                      opacty = 1.0;
-                    }
-                  });
-                },
-                child: Text("Tapped Me"))
-          ],
-        ),
+            secondChild: Image.asset(
+              "assets/images/photo.png",
+              height: 200,
+              width: 200,
+            ),
+            crossFadeState:
+                isFirst ? CrossFadeState.showFirst : CrossFadeState.showSecond,
+            duration: const Duration(seconds: 2)),
       ),
     );
   }
